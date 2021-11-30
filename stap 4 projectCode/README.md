@@ -1,10 +1,3 @@
-/*****************************************
-   Stoplicht Startcode
-   met toestansdiagrammen
-   Emmauscollege
-   v20201114GEE
- *****************************************/
-
 //In deze map zet je de Arduino-code (het .ino bestand) van je project.//
  /*****************************************
     variabelen die je gebruikt maken
@@ -43,10 +36,10 @@
  int knop8 = 0;
 
  // variabelen voor de toestanden
- const int alles Rood = 1; // alle stoplichten ROOD
- const int alles oranje = 2; // alle stoplichten ORANJE
- const int alles groen = 3; // alle stoplicht GROEN
- int toestand = alles rood;
+ const int alles_rood = 1; // alle stoplichten ROOD
+ const int alles_oranje = 2; // alle stoplichten ORANJE
+ const int alles_groen = 3; // alle stoplicht GROEN
+ int toestand = alles_rood;
  unsigned long toestandStartTijd = 0;
 
  /*****************************************
@@ -171,53 +164,81 @@
    knop8 = digitalRead(pin8Knop);
 
    // bepaal toestand
-   if (toestand == alles rood) {
+   if (toestand == alles_rood) {
      if (millis() - toestandStartTijd > 1000) {
        toestandStartTijd = millis();
-       toestand = alles groen;
+       toestand = alles_groen;
        Serial.println("Nieuwe toestand: alles groen");
      }
      if (knop7 == HIGH || knop8 == HIGH) {
-       toestand = alles oranje;
+       toestand = alles_oranje;
        Serial.println("Nieuwe toestand: alles oranje");
      }
    }
-   if (toestand == alles groen) {
+   if (toestand == alles_groen) {
      if (millis() - toestandStartTijd > 1000) {
        toestandStartTijd = millis();
-       toestand = alles rood;
+       toestand = alles_rood;
        Serial.println("Nieuwe toestand: alles rood");
      }
      if (knop7 == HIGH || knop8 == HIGH) {
-       toestand = alles oranje;
+       toestand = alles_oranje;
        Serial.println("Nieuwe toestand:alles oranje");
      }
    }
-   if (toestand == alles oranje) {
+   if (toestand == alles_oranje) {
      if (knop7 == LOW && knop8 == LOW) { // beide knoppen niet ingedrukt
        toestandStartTijd = millis();
-       toestand = alles rood;
+       toestand = alles_rood;
        Serial.println("Nieuwe toestand: alles rood");
      }
    }
 
    // zet stoplichten conform toestand
-   if (toestand == alles rood) {
+   if (toestand == alles_rood) {
        stoplicht(1, ROOD);
        stoplicht(2, ROOD);
        stoplicht(3, GROEN);
        stoplicht(4, GROEN);
        stoplicht(5, GROEN);
        stoplicht(6, ROOD);
-       stoplicht(7, GROEN);
-       stoplicht(8, GROEN);
+       stoplicht(7, ROOD);
+       stoplicht(8, ROOD);
+
+       for (int i = 1; i <= 8; i = i + 1) {
+       stoplicht(i, GROEN);
    }
-   if (toestand == alles groen) {
-     for (int i = 1; i <= 8; i = i + 1) {
+   
+   if (toestand == alles_groen) {
+       stoplicht(1, GROEN);
+       stoplicht(2, GROEN);
+       stoplicht(3, GROEN);
+       stoplicht(4, ROOD);
+       stoplicht(5, ROOD);
+       stoplicht(6, ROOD);
+       stoplicht(7, ROOD);
+       stoplicht(8, ROOD);
+     
+ 
+     
+     
+     for (int i = 1; i <= 8; i = i + 1) 
        stoplicht(i, GROEN);
      }
    }
-   if (toestand == alles oranje) {
+   if (toestand == alles_oranje) {
+
+       stoplicht(1, GROEN);
+       stoplicht(2, ROOD);
+       stoplicht(3, ROOD);
+       stoplicht(4, ROOD);
+       stoplicht(5, GROEN);
+       stoplicht(6, GROEN);
+       stoplicht(7, ROOD);
+       stoplicht(8, ROOD);
+
+
+    
      for (int i = 1; i <= 6; i = i + 1) {
        stoplicht(i, ORANJE);
      }
@@ -226,12 +247,3 @@
    // vertraging om te zorgen dat berichten op de seriele monitor leesbaar blijven
    delay(100);
  }
-void setup() {
-  // put your setup code here, to run once:
-
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-
-}
