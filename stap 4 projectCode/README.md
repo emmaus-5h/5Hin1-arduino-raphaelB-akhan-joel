@@ -176,12 +176,11 @@ void loop() {
     }
   }
   if (toestand == situatie_4) {
-    if (knop7 == HIGH || knop8 == HIGH) {
       toestandStartTijd = millis();
       toestand = situatie_2;
       Serial.println("Nieuwe toestand: situatie_2");
     }
-  }
+  
 
   if (toestand == situatie_2) {
     if (millis() - toestandStartTijd > 1000) {
@@ -207,12 +206,11 @@ void loop() {
   }
 
   if (toestand == situatie_6) {
-    if (knop7 == HIGH && knop8 == HIGH) { // beide knoppen niet ingedrukt
       toestandStartTijd = millis();
       toestand = situatie_1;
       Serial.println("Nieuwe toestand: situatie_1");
     }
-  }
+  
 
   // zet stoplichten conform toestand
   if (toestand == situatie_1) {
