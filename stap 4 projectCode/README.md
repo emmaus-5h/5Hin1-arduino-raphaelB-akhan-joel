@@ -39,6 +39,10 @@ int knop8 = 0;
 const int situatie_1 = 1; // alle stoplichten ROOD
 const int situatie_2 = 2; // alle stoplichten ORANJE
 const int situatie_3 = 3; // alle stoplicht GROEN
+const int situatie_4 = 4; // stoplichten situatie 1
+const int situatie_5 = 5; // stoplichten situatie 2
+const int situatie_6 = 6; // stoplichten situatie 3
+
 int toestand = situatie_1;
 unsigned long toestandStartTijd = 0;
 
@@ -167,26 +171,42 @@ void loop() {
   if (toestand == situatie_1) {
     if (millis() - toestandStartTijd > 1000) {
       toestandStartTijd = millis();
+      toestand = situatie_4;
+      Serial.println("Nieuwe toestand: situatie_4");
+    }
+  }
+  if (toestand == situatie_4) {
+    if (knop7 == HIGH || knop8 == HIGH) {
+      toestandStartTijd = millis();
       toestand = situatie_2;
       Serial.println("Nieuwe toestand: situatie_2");
     }
-    if (knop7 == HIGH || knop8 == HIGH) {
-      toestand = situatie_3;
-      Serial.println("Nieuwe toestand: situatie_2");
+  }
+
+  if (toestand == situatie_2) {
+    if (millis() - toestandStartTijd > 1000) {
+      toestandStartTijd = millis();
+      toestand = situatie_5;
+      Serial.println("Nieuwe toestand: situatie_5");
     }
   }
-  if (toestand == situatie_2) {
+  if (toestand == situatie_5) {
     if (millis() - toestandStartTijd > 1000) {
       toestandStartTijd = millis();
       toestand = situatie_3;
       Serial.println("Nieuwe toestand: situatie_3");
     }
-    if (knop7 == HIGH || knop8 == HIGH) { 
-      toestand = situatie_3;
-      Serial.println("Nieuwe toestand:alles oranje");
+  }
+  
+  if (toestand == situatie_3) {
+    if (millis() - toestandStartTijd > 1000) {
+      toestandStartTijd = millis();
+      toestand = situatie_6;
+      Serial.println("Nieuwe toestand: situatie_6");
     }
   }
-  if (toestand == situatie_3) {
+
+  if (toestand == situatie_6) {
     if (knop7 == HIGH && knop8 == HIGH) { // beide knoppen niet ingedrukt
       toestandStartTijd = millis();
       toestand = situatie_1;
@@ -198,14 +218,27 @@ void loop() {
   if (toestand == situatie_1) {
     stoplicht(1, ROOD);
     stoplicht(2, ROOD);
-    stoplicht(3, GROEN);
+    stoplicht(3, ROOD);
     stoplicht(4, GROEN);
     stoplicht(5, GROEN);
+    stoplicht(6, ROOD);
+    stoplicht(7, GROEN);
+    stoplicht(8, GROEN);
+
+  }
+
+  if (toestand == situatie_4) {
+    stoplicht(1, ROOD);
+    stoplicht(2, ROOD);
+    stoplicht(3, ROOD);
+    stoplicht(4, ORANJE);
+    stoplicht(5, ORANJE);
     stoplicht(6, ROOD);
     stoplicht(7, ROOD);
     stoplicht(8, ROOD);
 
   }
+
 
   if (toestand == situatie_2) {
     stoplicht(1, GROEN);
@@ -218,9 +251,21 @@ void loop() {
     stoplicht(8, ROOD);
 
 
+  }
 
+  if (toestand == situatie_5) {
+    stoplicht(1, ORANJE);
+    stoplicht(2, ORANJE);
+    stoplicht(3, ORANJE);
+    stoplicht(4, ROOD);
+    stoplicht(5, ROOD);
+    stoplicht(6, ROOD);
+    stoplicht(7, ROOD);
+    stoplicht(8, ROOD);
 
   }
+
+
   if (toestand == situatie_3) {
 
     stoplicht(1, GROEN);
@@ -232,11 +277,26 @@ void loop() {
     stoplicht(7, ROOD);
     stoplicht(8, ROOD);
 
-
-
-
   }
 
+
+  if (toestand == situatie_6) {
+
+    stoplicht(1, ORANJE);
+    stoplicht(2, ROOD);
+    stoplicht(3, ROOD);
+    stoplicht(4, ROOD);
+    stoplicht(5, ORANJE);
+    stoplicht(6, ORANJE);
+    stoplicht(7, ROOD);
+    stoplicht(8, ROOD);
+  }
+
+
+
+
+
+
   // vertraging om te zorgen dat berichten op de seriele monitor leesbaar blijven
-  delay(100);
+  delay (100);
 }
